@@ -42,7 +42,7 @@ func main() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
-	dg.Close()
+	_ = dg.Close()
 }
 
 // This function will be called (due to AddHandler above) every time a new
@@ -69,6 +69,17 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			_, err := s.ChannelMessageSend(m.ChannelID, utils.GetMap(randomNum))
 			if err != nil {
 				fmt.Println("Cant get map")
+			}
+		}()
+	} else if strings.HasPrefix(m.Content, "!pick") {
+		messageBody := strings.Split(m.Content, " ")[1]
+		options := utils.GetOptions(messageBody)
+		numOfOptions := len(options)
+		randomNum := utils.GetRandomUpTo(numOfOptions - 1)
+		go func() {
+			_, err := s.ChannelMessageSend(m.ChannelID, utils.Pick(options, randomNum))
+			if err != nil {
+				fmt.Println("Cant pick")
 			}
 		}()
 	} else {
