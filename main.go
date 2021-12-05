@@ -74,7 +74,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		messageBody := strings.Split(m.Content, " ")[1]
 		options := utils.GetOptions(messageBody)
 		numOfOptions := len(options)
-		randomNum := utils.GetRandomUpTo(numOfOptions - 1)
+		randomNum := utils.GetRandomUpTo(numOfOptions)
 		go func() {
 			_, err := s.ChannelMessageSend(m.ChannelID, utils.Pick(options, randomNum))
 			if err != nil {
@@ -84,6 +84,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	} else if strings.HasPrefix(m.Content, "!flip") {
 		randomNum := utils.GetRandomUpTo(2)
 		headsTails := []string{"heads", "tails"}
+		fmt.Println(randomNum)
 		go func() {
 			_, err := s.ChannelMessageSend(m.ChannelID, utils.Pick(headsTails, randomNum))
 			if err != nil {
