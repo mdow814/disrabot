@@ -81,6 +81,15 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				fmt.Println("Cant pick")
 			}
 		}()
+	} else if strings.HasPrefix(m.Content, "!flip") {
+		randomNum := utils.GetRandomUpTo(1)
+		headsTails := []string{"heads", "tails"}
+		go func() {
+			_, err := s.ChannelMessageSend(m.ChannelID, utils.Pick(headsTails, randomNum))
+			if err != nil {
+				fmt.Println("Cant pick heads or tails")
+			}
+		}()
 	} else {
 		//
 	}
