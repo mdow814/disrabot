@@ -56,7 +56,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		builds := utils.LoadBuilds()
 		randomNum := utils.GetRandomUpTo(150)
 		fmt.Println(m.MessageReference)
-
 		go func() {
 			_, err := s.ChannelMessageSend(m.ChannelID, builds.GetBuild(randomNum))
 			if err != nil {
